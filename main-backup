@@ -1,0 +1,22 @@
+import sklearn as sk
+import pandas as pd
+import numpy as np
+import seaborn as sns
+from sklearn import preprocessing
+import matplotlib as plt
+
+players = pd.read_csv("C:/Users/First Ascent Uptown/Desktop/Newfolder/Players.csv")
+stats = pd.read_csv("C:/Users/First Ascent Uptown/Desktop/Newfolder/Seasons_Stats.csv")
+
+stats.describe()
+players.describe()
+
+
+###Begin preprocessing 'players' set.
+players['weight'] = players['weight'].replace(np.nan, -1)
+players['weight'] = players['weight'].apply(lambda x:int(x))
+
+players['height'] = players['height'].replace(np.nan, -1)
+players['height'] = players['height'].apply(lambda x:int(x))
+
+players['born'] = players['born'].replace(np.nan, -1)
