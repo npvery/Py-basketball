@@ -1,0 +1,26 @@
+##Import libraries
+import pandas as pd
+import numpy as np
+import sklearn as sk
+from sklearn import preprocessing
+import seaborn as sns
+import matplotlib as plt
+
+##Read in data using pandas
+players = pd.read_csv("C:/Users/nicholasve/Desktop/Other/1 - Projects/Data/Players.csv", header = 0)
+stats = pd.read_csv("C:/Users/nicholasve/Desktop/Other/1 - Projects/Data/Seasons_Stats.csv", header = 0)
+
+##Visualize using seaborn
+sns.barplot(x = "FT%", y = "3P%", data = stats)
+  """This plot shows a couple things. One, there is a clear positive relationship between the two. Two, lots of preprocessing will be 
+  necessary here. There are a lot of players who maybe only took a couple shots in their whole careers; make "qualified" players those 
+  who took at least 100 shots during their career. Three, binning might be pretty important here; this dataset is huge, and kind of 
+  unintelligible in the graph."""
+sns.barplot(x = "Age", y = "eFG%", data = stats)  
+
+
+###Begin preprocessing
+
+#Get rid of NaNs, and change ages to integers. 
+stats['Age'] = stats['Age'].replace(np.nan, -1)
+stats['Age'] = stats['Age'].apply(lambda x: int(x))
