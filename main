@@ -20,7 +20,13 @@ sns.barplot(x = "Age", y = "eFG%", data = stats)
 
 
 ###Begin preprocessing of "players" set.
+###Notes: Players have multiple rows in years when they're traded. Combine these.
+#Change ages to integers.
+#Create "Minutes per Game" column if not included.
 
 #Get rid of NaNs, and change ages to integers. 
 stats['Age'] = stats['Age'].replace(np.nan, -1)
 stats['Age'] = stats['Age'].apply(lambda x: int(x))
+
+
+
