@@ -19,7 +19,7 @@ sns.barplot(x = "FT%", y = "3P%", data = stats)
 sns.barplot(x = "Age", y = "eFG%", data = stats)  
 
 
-###Begin preprocessing
+###Begin preprocessing of "players" set.
 
 #Get rid of NaNs, and change ages to integers. 
 stats['Age'] = stats['Age'].replace(np.nan, -1)
