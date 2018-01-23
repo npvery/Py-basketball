@@ -20,3 +20,9 @@ players['height'] = players['height'].replace(np.nan, -1)
 players['height'] = players['height'].apply(lambda x:int(x))
 
 players['born'] = players['born'].replace(np.nan, -1)
+
+players['birth_city'].replace(np.nan, 'Unknown', inplace = True)
+players['birth_state'].replace(np.nan, 'Unknown', inplace = True)
+players['born'].replace(np.nan, -1, inplace = True)
+players['collage'].replace(np.nan, 'Unknown', inplace = True)
+players.Player.isnull().sum()  #counts how many np.nans there are in that column
