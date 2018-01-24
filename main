@@ -18,8 +18,17 @@ sns.barplot(x = "FT%", y = "3P%", data = stats)
   unintelligible in the graph."""
 sns.barplot(x = "Age", y = "eFG%", data = stats)  
 
-
 ###Begin preprocessing of "players" set.
+#Change np.nan to -1
+players['weight'] = players['weight'].replace(np.nan, -1)
+players['weight'] = players['weight'].apply(lambda x:int(x))
+
+players['height'] = players['height'].replace(np.nan, -1)
+players['height'] = players['height'].apply(lambda x:int(x))
+
+players['born'] = players['born'].replace(np.nan, -1)
+
+###Begin preprocessing of "stats" set.
 ###Notes: Players have multiple rows in years when they're traded. Combine these.
 #Change ages to integers.
 #Create "Minutes per Game" column if not included.
