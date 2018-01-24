@@ -24,9 +24,18 @@ sns.barplot(x = "Age", y = "eFG%", data = stats)
 #Change ages to integers.
 #Create "Minutes per Game" column if not included.
 
+#Define functon to clean up np.nans in data
+def clean(var, new_val):
+  stats[var].replace(np.nan, val, inplace = True)
+  
 #Get rid of NaNs, and change ages to integers. 
 stats['Age'] = stats['Age'].replace(np.nan, -1)
 stats['Age'] = stats['Age'].apply(lambda x: int(x))
 
+#Bin GS variable to make it easier to visualize
+stats['GS'].replace(np.nan, -1, inplace = True)
+bins = [-2, -0.5, 10, 20, 30, 40, 50, 60, 70, 120]
+names = ["Unknown", "0-10", "10-20", "20-30", "30-40", "40-50", "50-60", "60-70", "70+"]
+stats['GS'] = pd.cut(stats.GS, bins, labels = names)
 
 
