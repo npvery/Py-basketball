@@ -63,5 +63,7 @@ clean('G', -1)
 def add_MPG(data):
   MPG = data['MP'] / data['G']
   data.insert(9, 'MPG', MPG)
+ 
+ 
     
 
