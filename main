@@ -25,10 +25,26 @@ sns.barplot(x = "Age", y = "eFG%", data = stats)
 #Create "Minutes per Game" column if not included.
 #Have to qualify these variables. Remove anyone who didn't play at least 100 minutes that season.
 
+
+#Drop useless 'blanl' and 'blank2' columns.
+stats = stats.drop(['blanl', 'blank2'], axis = 1)
+
+#Drop entries w/ no name.
+null_columns = stats.columns[stats.isnull().any()]
+stats.drop([stats['Player'].isnull()][null_columns])
+
 #Define functon to clean up np.nans in data
-def clean(var, new_val):
-  stats[var].replace(np.nan, new_val, inplace = True)
-  
+def clean(data, var, new_val):
+  data[var].replace(np.nan, new_val, inplace = True)
+
+#Cleans every column
+for column in stats:
+    clean(stats, column, -1)
+    
+clean(stats, 'MP', -1)
+clean(stats, 'G', -1)
+clean(stats, 'Age', -1)
+
 #Get rid of NaNs, and change ages to integers.
 stats['Age'] = stats['Age'].replace(np.nan, -1)
 stats['Age'] = stats['Age'].apply(lambda x: int(x))
@@ -54,11 +70,6 @@ stats = stats[stats.MP >= 100]
 def qualify_FTA(data):
   data['FTA'] = data[data['FTA'] >= 50]
 
-#Drop useless 'blanl' and 'blank2' columns.
-stats = stats.drop(['blanl', 'blank2'], axis = 1)
-
-clean('MP', -1)
-clean('G', -1)
 #Add minutes per game column.
 def add_MPG(data):
   MPG = data['MP'] / data['G']
