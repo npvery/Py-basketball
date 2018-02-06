@@ -27,7 +27,7 @@ sns.barplot(x = "Age", y = "eFG%", data = stats)
 
 
 #Drop useless 'blanl' and 'blank2' columns.
-stats = stats.drop(['blanl', 'blank2'], axis = 1)
+stats.drop(['blanl', 'blank2'], axis = 1, inplace = True)
 
 #Drop entries w/ no name.
 null_columns = stats.columns[stats.isnull().any()]
@@ -60,9 +60,10 @@ stats['GS'] = pd.cut(stats.GS, bins, labels = names)
 
 #Bin FT% variable to make it easier to visualize
 def clean_FT(data):
-  data.FT%.replace(np.nan, -.5, inplace = True)
+  data['FT%'].replace(np.nan, -.5, inplace = True)
   bins = [-1, 0, 30, 50, 60, 70, 80, 90, 99, 1000]
   names = ['Unknown', '<30', '30-50', '51-60', '61-70', '71-80', '81-90', '91-99', 'Perfect']
+  data['FT%'] = pd.cut(data['FT%'], bins, labels = names)
 
 #Remove unqualified players. 'Qualified' here is defined as having played more than 100 minutes in a season.
 stats = stats[stats.MP >= 100]
