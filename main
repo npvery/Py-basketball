@@ -20,7 +20,7 @@ sns.barplot(x = "Age", y = "eFG%", data = stats)
 
 
 ###Begin preprocessing of "players" set.
-###Notes: Players have multiple rows in years when they're traded. Combine these.
+###Notes: Players have multiple rows in years when they're traded. Combine these?
 #Change ages to integers.
 #Create "Minutes per Game" column if not included.
 #Have to qualify these variables. Remove anyone who didn't play at least 100 minutes that season.
