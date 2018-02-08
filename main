@@ -38,25 +38,37 @@ def clean(data, var, new_val):
   data[var].replace(np.nan, new_val, inplace = True)
   return data
 
-#Cleans every column
+#Cleans every column by replacing np.nans with -1.
 for column in stats:
     clean(stats, column, -1)
-    
-clean(stats, 'MP', -1)
-clean(stats, 'G', -1)
-clean(stats, 'Age', -1)
 
-#Get rid of NaNs, and change ages to integers.
-stats['Age'] = stats['Age'].replace(np.nan, -1)
+#Change ages to integers.
 stats['Age'] = stats['Age'].apply(lambda x: int(x))
+
+###Qualify players, based on MP, G, FGA, 2PA, 3PA, FTA
+
+#Remove unqualified players. 'Qualified' here is defined as having played more than 100 minutes in a season.
+def qualify(data, var, qual_val):
+  data = data[data[var] >= qual_val]
+  
+qualify(stats, 'MP', 100)
+
+qual_cols = ['MP', 'G', 'FGA', '2PA', '3PA', 'FTA']
+
+for column in qual_cols:
+  qualify(stats, column, 25)
+
+#Remove players with <50 free throw attempts (FTA)
+def qualify_FTA(data):
+  data['FTA'] = data[data['FTA'] >= 50]
+qualify_FTA(stats)
+
 
 #Bin GS variable to make it easier to visualize
 stats['GS'].replace(np.nan, -1, inplace = True)
 bins = [-2, -0.5, 10, 20, 30, 40, 50, 60, 70, 120]
 names = ["Unknown", "0-10", "10-20", "20-30", "30-40", "40-50", "50-60", "60-70", "70+"]
 stats['GS'] = pd.cut(stats.GS, bins, labels = names)
-
-
 
 #Bin FT% variable to make it easier to visualize
 def clean_FT(data):
@@ -65,12 +77,7 @@ def clean_FT(data):
   names = ['Unknown', '<30', '30-50', '51-60', '61-70', '71-80', '81-90', '91-99', 'Perfect']
   data['FT%'] = pd.cut(data['FT%'], bins, labels = names)
 
-#Remove unqualified players. 'Qualified' here is defined as having played more than 100 minutes in a season.
-stats = stats[stats.MP >= 100]
 
-#Remove players with <50 free throw attempts (FTA)
-def qualify_FTA(data):
-  data['FTA'] = data[data['FTA'] >= 50]
 
 #Add minutes per game column.
 def add_MPG(data):
